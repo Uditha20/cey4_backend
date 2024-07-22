@@ -8,21 +8,43 @@ import getCountryIso3 from "country-iso-2-to-3";
 
 export const addProduct = async (req, res) => {
   try {
-    const { name, price, description, category, rating, supply } = req.body;
-
-    const mainImage = req.files["mainImage"]
-    ? req.files["mainImage"][0].path
-    : null;
-  const additionalImages = req.files["additionalImages"]
-    ? req.files["additionalImages"].map((file) => file.path)
-    : [];
-    const newProduct = new Product({
+    const {
+      sku,
       name,
       price,
-      description,
-      category,
+      discount,
+      offerEnd,
+      new: isNew,
       rating,
-      supply,
+      saleCount,
+      category,
+      tag,
+      stock,
+      shortDescription,
+      fullDescription,
+    } = req.body;
+
+    const mainImage = req.files["mainImage"]
+      ? req.files["mainImage"][0].path
+      : null;
+    const additionalImages = req.files["additionalImages"]
+      ? req.files["additionalImages"].map((file) => file.path)
+      : [];
+
+    const newProduct = new Product({
+      sku,
+      name,
+      price,
+      discount,
+      offerEnd,
+      new: isNew,
+      rating,
+      saleCount,
+      category,
+      tag,
+      stock,
+      shortDescription,
+      fullDescription,
       mainImage,
       additionalImages,
     });

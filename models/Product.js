@@ -3,20 +3,26 @@ import mongoose from 'mongoose';
 
 const ProductSchema = new mongoose.Schema(
   {
+    sku: String,
     name: String,
     price: Number,
-    description: String,
-    category: String,
+    discount: Number,
+    offerEnd: Date,
+    new: Boolean,
     rating: Number,
-    supply: Number,
-    stock:{
-      type:Number,
-      default:10
+    saleCount: Number,
+    category: [String], // Array of strings for categories
+    tag: [String], // Array of strings for tags
+    stock: {
+      type: Number,
+      default: 10
     },
     mainImage: String, // URL or path to the main image
     additionalImages: [{
       type: String, // Array of URLs or paths to additional images
     }], // Array of URLs or paths to additional images
+    shortDescription: String,
+    fullDescription: String,
   },
   { timestamps: true }
 );
