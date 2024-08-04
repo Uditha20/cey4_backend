@@ -22,6 +22,7 @@ export const addProduct = async (req, res) => {
       stock,
       shortDescription,
       fullDescription,
+      deliveryCost
     } = req.body;
 
     const mainImage = req.files["mainImage"]
@@ -47,6 +48,7 @@ export const addProduct = async (req, res) => {
       fullDescription,
       mainImage,
       additionalImages,
+      deliveryCost
     });
 
     const savedProduct = await newProduct.save();

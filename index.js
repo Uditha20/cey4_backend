@@ -12,6 +12,7 @@ import salesRoutes from "./routes/sales.js";
 import path from 'path';
 import { fileURLToPath } from "url";
 import userRouter from "./routes/userRouter.js";
+import orderRouter from "./routes/orderRoutes.js"
 // data imports
 import User from "./models/User.js";
 import Product from "./models/Product.js";
@@ -47,7 +48,7 @@ app.use("/general", generalRoutes);
 app.use("/management", managementRoutes);
 app.use("/sales", salesRoutes);
 app.use("/user", userRouter);
-
+app.use("/order",orderRouter);
 
 /* MONGOOSE SETUP */
 const PORT = process.env.PORT || 9000;

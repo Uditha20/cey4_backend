@@ -23,6 +23,7 @@ const ProductSchema = new mongoose.Schema(
     }], // Array of URLs or paths to additional images
     shortDescription: String,
     fullDescription: String,
+    deliveryCost: String
   },
   { timestamps: true }
 );
