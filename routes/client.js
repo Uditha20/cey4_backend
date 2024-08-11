@@ -4,13 +4,15 @@ import {
   getCustomers,
   getTransactions,
   getGeography,
-  addProduct
+  addProduct,
 } from "../controllers/client.js";
 
 import multer from "multer";
+import protect from "../middleware/authMiddleware.js";
 const router = express.Router();
 
 router.get("/products", getProducts);
+router.get("/dashboard/products",protect,getProducts);
 router.get("/customers", getCustomers);
 router.get("/transactions", getTransactions);
 router.get("/geography", getGeography);
@@ -29,4 +31,7 @@ router.post('/products', upload.fields([
   { name: "mainImage", maxCount: 1 },
   { name: "additionalImages", maxCount: 3 },
 ]), addProduct);
+
+
+// router.post('/reset-sale-count', resetSaleCount);
 export default router;

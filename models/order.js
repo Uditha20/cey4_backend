@@ -31,6 +31,11 @@ const orderSchema = new mongoose.Schema({
     email: { type: String },
     orderNotes: { type: String },
   },
+  status: {
+    type: String,
+    enum: ['pending', 'confirmed', 'cancelled'],
+    default: 'pending',
+  },
   createdAt: { type: Date, default: Date.now },
 });
 

@@ -10,12 +10,15 @@ const ProductSchema = new mongoose.Schema(
     offerEnd: Date,
     new: Boolean,
     rating: Number,
-    saleCount: Number,
+    saleCount: {
+      default:0,
+      type:Number
+    },
     category: [String], // Array of strings for categories
     tag: [String], // Array of strings for tags
     stock: {
       type: Number,
-      default: 10
+      default: 0
     },
     mainImage: String, // URL or path to the main image
     additionalImages: [{

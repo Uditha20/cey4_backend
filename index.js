@@ -13,6 +13,7 @@ import path from 'path';
 import { fileURLToPath } from "url";
 import userRouter from "./routes/userRouter.js";
 import orderRouter from "./routes/orderRoutes.js"
+import webhookRoutes from './routes/webhook.js';
 // data imports
 import User from "./models/User.js";
 import Product from "./models/Product.js";
@@ -32,12 +33,13 @@ import {
 /* CONFIGURATION */
 dotenv.config();
 const app = express();
+app.use("/webhook", webhookRoutes);
 app.use(express.json());
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(morgan("common"));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

@@ -152,3 +152,13 @@ export const getGeography = async (req, res) => {
     res.status(404).json({ message: error.message });
   }
 };
+
+
+// export const resetSaleCount = async (req, res) => {
+//   try {
+//     const result = await Product.updateMany({}, { $set: { saleCount: 0 } });
+//     res.status(200).json({ message: `Updated ${result.nModified} products' saleCount to 0` });
+//   } catch (error) {
+//     res.status(500).json({ message: 'Error updating saleCount', error });
+//   }
+// };
