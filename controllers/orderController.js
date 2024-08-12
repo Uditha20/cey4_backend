@@ -70,10 +70,14 @@ export const paymentSession = async (req, res, next) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-
 export const getAllOrders = async (req, res) => {
   try {
     const orders = await Order.aggregate([
+      {
+        $match: {
+          status: "confirmed",
+        },
+      },
       {
         $lookup: {
           from: "products",
@@ -124,6 +128,7 @@ export const getAllOrders = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
 
 
 
