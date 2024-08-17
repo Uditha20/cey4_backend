@@ -19,6 +19,7 @@ const UserSchema = new mongoose.Schema(
       required: true,
       min: 5,
     },
+
     city: String,
     state: String,
     country: String,
@@ -30,6 +31,18 @@ const UserSchema = new mongoose.Schema(
       enum: ["user", "admin", "superadmin"],
       default: "admin",
     },
+    lastLogin: {
+      type: Date,
+      default: Date.now,
+    },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+    resetPasswordToken: String,
+    resetPasswordExpiresAt: Date,
+    verificationToken: String,
+    verificationTokenExpiresAt: Date,
   },
   { timestamps: true }
 );
