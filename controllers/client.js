@@ -2,8 +2,10 @@ import Product from "../models/Product.js";
 // import ProductStat from "../models/ProductStat.js";
 import User from "../models/User.js";
 import Transaction from "../models/Transaction.js";
-import getCountryIso3 from "country-iso-2-to-3";
+// import getCountryIso3 from "country-iso-2-to-3";
 // controllers/productController.js
+
+
 
 
 export const addProduct = async (req, res) => {
@@ -22,7 +24,28 @@ export const addProduct = async (req, res) => {
       stock,
       shortDescription,
       fullDescription,
-      deliveryCost
+      deliveryCost,
+      deliveryCostTwo,
+      // New Fields
+      brand,
+      condition,
+      material,
+      size,
+      weight,
+      capacity,
+      colour,
+      itemType,
+      features,
+      department,
+      shape,
+      countryOfManufacture,
+      indoorOutdoor,
+      originalReproduction,
+      handmade,
+      unitQuantity,
+      productId,
+      style,
+      occasion
     } = req.body;
 
     const mainImage = req.files["mainImage"]
@@ -48,7 +71,28 @@ export const addProduct = async (req, res) => {
       fullDescription,
       mainImage,
       additionalImages,
-      deliveryCost
+      deliveryCost,
+      deliveryCostTwo,
+      // New Fields
+      brand,
+      condition,
+      material,
+      size,
+      weight,
+      capacity,
+      colour,
+      itemType,
+      features,
+      department,
+      shape,
+      countryOfManufacture,
+      indoorOutdoor,
+      originalReproduction,
+      handmade,
+      unitQuantity,
+      productId,
+      style,
+      occasion
     });
 
     const savedProduct = await newProduct.save();
@@ -57,6 +101,82 @@ export const addProduct = async (req, res) => {
     res.status(500).json({ message: "Error creating product", error });
   }
 };
+
+export const updateProduct = async (req, res) => {  
+  try {
+    const id = req.params.id;
+
+    // Check if the product exists
+    const product = await Product.findById(id);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    // Extract fields from request body
+    const {
+      sku,
+      name,
+      price,
+      discount,
+      offerEnd,
+      new: isNew,
+      rating,
+      saleCount,
+      category,
+      tag,
+      stock,
+      shortDescription,
+      fullDescription,
+      deliveryCost,
+      deliveryCostTwo
+    } = req.body;
+
+    // Handle main image and additional images
+    const mainImage = req.files && req.files["mainImage"]
+      ? req.files["mainImage"][0].path
+      : product.mainImage;
+
+    const additionalImages = req.files && req.files["additionalImages"]
+      ? req.files["additionalImages"].map((file) => file.path)
+      : product.additionalImages;
+
+    // Build an object with only provided fields
+    const updatedProduct = {
+      sku: sku || product.sku,
+      name: name || product.name,
+      price: price || product.price,
+      discount: discount || product.discount,
+      offerEnd: offerEnd || product.offerEnd,
+      new: typeof isNew !== 'undefined' ? isNew : product.new,
+      rating: rating || product.rating,
+      saleCount: saleCount || product.saleCount,
+      category: category || product.category,
+      tag: tag || product.tag,
+      stock: stock || product.stock,
+      shortDescription: shortDescription || product.shortDescription,
+      fullDescription: fullDescription || product.fullDescription,
+      mainImage,
+      additionalImages,
+      deliveryCost: deliveryCost || product.deliveryCost,
+      deliveryCostTwo: deliveryCostTwo || product.deliveryCostTwo
+    };
+
+    // Perform the update
+    const updated = await Product.findByIdAndUpdate(id, updatedProduct, {
+      new: true,
+    });
+
+    // Respond with the updated product
+    res.status(200).json(updated);
+  } catch (error) {
+    // Log the full error for troubleshooting
+    console.error("Error updating product:", error);
+
+    // Return a more descriptive error response
+    res.status(500).json({ message: "Error updating product", error: error.message || "Unknown error" });
+  }
+};
+
 
 export const getProducts = async (req, res) => {
   try {

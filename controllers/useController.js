@@ -11,7 +11,6 @@ export const registerUser = async (req, res) => {
     city,
     state,
     country,
-    occupation,
     phoneNumber,
   } = req.body;
 
@@ -38,10 +37,8 @@ export const registerUser = async (req, res) => {
       city,
       state,
       country,
-      occupation,
       phoneNumber,
-      transactions: [],
-      role: "admin",
+      role: "user",
       verificationToken,
       verificationTokenExpiresAt: Date.now() + 24 * 60 * 60 * 1000, // 24 hours
     });
@@ -106,6 +103,9 @@ export const loginUser = async (req, res) => {
     if (!user) {
       return res.status(400).json({ message: "Invalid email or password" });
     }
+	if(!user.isVerified){
+		return res.status(400).json({ message: "verify your email" });
+	}
 
     // Verify password
     const isMatch = await bcrypt.compare(password, user.password);
