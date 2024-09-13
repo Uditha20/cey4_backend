@@ -42,21 +42,21 @@ app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(morgan("common"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-const allowedOrigins = [
-  process.env.MAINURL || 'http://localhost:3000',  // Frontend
-  process.env.DASH_URL || 'http://localhost:3001', // Dashboard
-];
-
-app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true,  // Allow credentials like cookies
-}));
+// const allowedOrigins = [
+//   process.env.MAINURL || 'http://localhost:3000',  // Frontend
+//   process.env.DASH_URL || 'http://localhost:3001', // Dashboard
+// ];
+app.use(cors());
+// app.use(cors({
+//   origin: (origin, callback) => {
+//     if (!origin || allowedOrigins.includes(origin)) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error('Not allowed by CORS'));
+//     }
+//   },
+//   credentials: true,  // Allow credentials like cookies
+// }));
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
