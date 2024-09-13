@@ -13,7 +13,7 @@ const ProductSchema = new mongoose.Schema(
       default: 0,
       type: Number,
     },
-    category: [String], // Array of strings for categories
+    category: String, // Array of strings for categories
     tag: [String], // Array of strings for tags
     stock: {
       type: Number,
@@ -35,7 +35,7 @@ const ProductSchema = new mongoose.Schema(
     condition: String,
     material: String,
     size: String,
-    weight: String,
+    weight: Number,
     capacity: String,
     colour: String,
     itemType: String,

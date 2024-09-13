@@ -6,7 +6,17 @@ const CategorySchema = new mongoose.Schema({
         required: true,
         min: 2,
         max: 100,
-    }
+    },
+    description: {
+        type: String,
+        required: true,
+        min: 2,
+        max: 255,
+    },
+    isActive: {
+        type: Boolean,
+        default: true,
+    },
   
 
 });

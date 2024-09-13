@@ -94,6 +94,15 @@ export const verifyEmail = async (req, res) => {
 };
 
 
+
+
+
+const singToken = (id, role) => {
+	return jwt.sign({ id, role }, process.env.JWT_SECRET, {
+	  expiresIn: "1hr",
+	});
+  };
+  
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
@@ -197,4 +206,14 @@ export const resetPassword = async (req, res) => {
 		console.log("Error in resetPassword ", error);
 		res.status(400).json({ success: false, message: error.message });
 	}
+};
+
+
+export const getUserProfile = async (req, res) => {
+  try {
+	const user = await User.findById(req.user._id).select("-password");
+	res.status(200).json(user);
+  } catch (error) {
+	res.status(404).json({ message: error.message });
+  }
 };
