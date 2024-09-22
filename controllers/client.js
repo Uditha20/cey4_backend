@@ -7,51 +7,59 @@ import Transaction from "../models/Transaction.js";
 
 
 
-
 export const addProduct = async (req, res) => {
   try {
     const {
-      sku,
-      name,
-      price,
-      discount,
-      offerEnd,
-      new: isNew,
-      rating,
-      saleCount,
-      category,
-      tag,
-      stock,
-      shortDescription,
-      fullDescription,
-      deliveryCost,
-      deliveryCostTwo,
-      // New Fields
-      brand,
-      condition,
-      material,
-      size,
-      weight,
-      capacity,
-      colour,
-      itemType,
-      features,
-      department,
-      shape,
-      countryOfManufacture,
-      indoorOutdoor,
-      originalReproduction,
-      handmade,
-      unitQuantity,
-      productId,
-      style,
-      occasion
+      sku = "", // default to empty string
+      name = "",
+      discount = 0, // default to 0
+      offerEnd = null, // default to null for date values
+      new: isNew = false, // default to false for boolean values
+      rating = 0,
+      saleCount = 0,
+      category = [],
+      tag = [],
+      stock = 0,
+      shortDescription = "",
+      fullDescription = "",
+      brand = "",
+      condition = "",
+      material = "",
+      weight = 0,
+      weightMeasure = "",
+      capacity = 0,
+      capacityMeasure = "",
+      colours = [], // default to an empty array
+      itemType = "",
+      features = [],
+      department = "",
+      shape = "",
+      countryOfManufacture = "",
+      indoorOutdoor = "",
+      originalReproduction = "",
+      handmade = false,
+      unitQuantity = 1, // default to 1 for quantity
+      productId = "",
+      style = "",
+      occasion = ""
     } = req.body;
 
-    const mainImage = req.files["mainImage"]
+    // Parse JSON values or set default empty object/array
+    const price = req.body.price ? JSON.parse(req.body.price) : 0;
+    const xlPrice = req.body.xlPrice ? JSON.parse(req.body.xlPrice) : 0;
+    const mdPrice = req.body.mdPrice ? JSON.parse(req.body.mdPrice) : 0;
+    const itemRelatedParts = req.body.itemRelatedParts
+      ? JSON.parse(req.body.itemRelatedParts)
+      : { partName: "", width: 0, height: 0, length: 0 }; // default structure
+    const dimensions = req.body.dimensions
+      ? JSON.parse(req.body.dimensions)
+      : { width: 0, height: 0, length: 0 }; // default structure
+
+    // Handle file uploads, default to null or empty array
+    const mainImage = req.files && req.files["mainImage"]
       ? req.files["mainImage"][0].path
       : null;
-    const additionalImages = req.files["additionalImages"]
+    const additionalImages = req.files && req.files["additionalImages"]
       ? req.files["additionalImages"].map((file) => file.path)
       : [];
 
@@ -59,6 +67,8 @@ export const addProduct = async (req, res) => {
       sku,
       name,
       price,
+      xlPrice,
+      mdPrice,
       discount,
       offerEnd,
       new: isNew,
@@ -71,16 +81,15 @@ export const addProduct = async (req, res) => {
       fullDescription,
       mainImage,
       additionalImages,
-      deliveryCost,
-      deliveryCostTwo,
-      // New Fields
       brand,
       condition,
       material,
-      size,
       weight,
+      weightMeasure,
       capacity,
-      colour,
+      capacityMeasure,
+      colours,
+      dimensions,
       itemType,
       features,
       department,
@@ -92,6 +101,7 @@ export const addProduct = async (req, res) => {
       unitQuantity,
       productId,
       style,
+      itemRelatedParts,
       occasion
     });
 

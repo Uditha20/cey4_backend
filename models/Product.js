@@ -1,10 +1,70 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const ProductSchema = new mongoose.Schema(
   {
     sku: String,
-    name: String,
-    price: Number,
+    name: {
+      type: String,
+      required: [true, "Please provide a product name"],
+    },
+
+    price: {
+      basePrice: {
+        type: Number, // Base price for a normal size product
+        required: false,
+      },
+      oneDayPremium: {
+        type: Number, // 1-day premium delivery cost for normal size
+        required: false,
+      },
+      twoDayPremium: {
+        type: Number, // 2-day premium delivery cost for normal size
+        required: false,
+      },
+    },
+    xlPrice: {
+      xlBasePrice: {
+        type: Number, // Price for extra-large size
+        required: false,
+      },
+      xlOneDayPremium: {
+        type: Number, // 1-day premium delivery cost for XL size
+        required: false,
+      },
+      xlTwoDayPremium: {
+        type: Number, // 2-day premium delivery cost for XL size
+        required: false,
+      },
+    },
+    mdPrice: {
+      mdBasePrice: {
+        type: Number, // Price for medium size
+        required: false,
+      },
+      mdOneDayPremium: {
+        type: Number, // 1-day premium delivery cost for Medium size
+        required: false,
+      },
+      mdTwoDayPremium: {
+        type: Number, // 2-day premium delivery cost for Medium size
+        required: false,
+      },
+    },
+    smPrice: {
+      basePrice: {
+        type: Number, // Price for small size
+        required: false,
+      },
+      oneDayPremium: {
+        type: Number, // 1-day premium delivery cost for Small size
+        required: false,
+      },
+      twoDayPremium: {
+        type: Number, // 2-day premium delivery cost for Small size
+        required: false,
+      },
+    },
+
     discount: Number,
     offerEnd: Date,
     new: Boolean,
@@ -24,25 +84,69 @@ const ProductSchema = new mongoose.Schema(
       {
         type: String, // Array of URLs or paths to additional images
       },
-    ], 
+    ],
     shortDescription: String,
     fullDescription: String,
-    deliveryCost: String,
-    deliveryCostTwo: String, // New field for an additional delivery cost
 
-    // New Fields
-    brand: String,
-    condition: String,
+    brand: {
+      type: String,
+      default: "EGI",
+    },
+    condition: {
+      type: String,
+      default: "Brand New",
+    },
+
     material: String,
-    size: String,
+    dimensions: {
+      dwidth: {
+        type: Number,
+      },
+      dheight: {
+        type: Number,
+      },
+      dlength: {
+        type: Number,
+      },
+    },
+    dimensionsMeasure: String,  
     weight: Number,
+    weightMeasure: String,
     capacity: String,
-    colour: String,
+    capacityMeasure: String,
+
+    colors: [
+      {
+        name: {
+          type: String, // Color name (e.g., Red, Blue, Black)
+
+        },
+        image: {
+          type: String, // Image URL for this color
+          
+        },
+      },
+    ],
     itemType: String,
-    features: String,
+    itemRelatedParts:{
+      partName: String,
+      width: {
+        type: Number,
+      },
+      height: {
+        type: Number,
+      },
+      length: {
+        type: Number,
+      },
+    },
+    features:[String],
     department: String,
     shape: String,
-    countryOfManufacture: String,
+    countryOfManufacture: {
+      type: String,
+      default: "Sri Lanka",
+    },
     indoorOutdoor: String,
     originalReproduction: String,
     handmade: String,
@@ -54,5 +158,5 @@ const ProductSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Product = mongoose.model('Product', ProductSchema);
+const Product = mongoose.model("Product", ProductSchema);
 export default Product;
