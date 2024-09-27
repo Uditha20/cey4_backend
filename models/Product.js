@@ -17,7 +17,16 @@ const ProductSchema = new mongoose.Schema(
         type: Number, // 1-day premium delivery cost for normal size
         required: false,
       },
+      oneDayPremiumSecondItem: {
+        type: Number, // 1-day premium delivery cost for normal size
+        required: false,
+      },
+
       twoDayPremium: {
+        type: Number, // 2-day premium delivery cost for normal size
+        required: false,
+      },
+      twoDayPremiumSecondItem: {
         type: Number, // 2-day premium delivery cost for normal size
         required: false,
       },
@@ -27,12 +36,21 @@ const ProductSchema = new mongoose.Schema(
         type: Number, // Price for extra-large size
         required: false,
       },
+
       xlOneDayPremium: {
         type: Number, // 1-day premium delivery cost for XL size
         required: false,
       },
+      xlOneDayPremiumSecondItem: {
+        type: Number,
+        required: false,
+      },
       xlTwoDayPremium: {
         type: Number, // 2-day premium delivery cost for XL size
+        required: false,
+      },
+      xlTwoDayPremiumSecondItem: {
+        type: Number,
         required: false,
       },
     },
@@ -45,8 +63,16 @@ const ProductSchema = new mongoose.Schema(
         type: Number, // 1-day premium delivery cost for Medium size
         required: false,
       },
+      mdOneDayPremiumSecondItem: {
+        type: Number,
+        required: false,
+      },
       mdTwoDayPremium: {
         type: Number, // 2-day premium delivery cost for Medium size
+        required: false,
+      },
+      mdTwoDayPremiumSecondItem: {
+        type: Number,
         required: false,
       },
     },
