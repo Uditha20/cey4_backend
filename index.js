@@ -14,6 +14,7 @@ import { fileURLToPath } from "url";
 import userRouter from "./routes/userRouter.js";
 import orderRouter from "./routes/orderRoutes.js";
 import webhookRoutes from "./routes/webhook.js";
+import variationRouter from "./routes/variationRouter.js";
 import cookieParser from 'cookie-parser';
 // data imports
 import User from "./models/User.js";
@@ -67,6 +68,7 @@ app.use("/management", managementRoutes);
 app.use("/sales", salesRoutes);
 app.use("/user", userRouter);
 app.use("/order", orderRouter);
+app.use("/productVariation",variationRouter);
 
 /* MONGOOSE SETUP */
 const PORT = process.env.PORT || 9000;

@@ -284,6 +284,17 @@ export const getGeography = async (req, res) => {
 };
 
 
+
+export const getProductNames = async (req, res) => {
+  try {
+    const products = await Product.find({}, 'id name');
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json({ message: 'Error retrieving product names', error });
+  }
+};
+
+
 // export const resetSaleCount = async (req, res) => {
 //   try {
 //     const result = await Product.updateMany({}, { $set: { saleCount: 0 } });

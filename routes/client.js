@@ -6,6 +6,7 @@ import {
   getGeography,
   addProduct,
   updateProduct,
+  getProductNames,
 } from "../controllers/client.js";
 
 import multer from "multer";
@@ -37,6 +38,8 @@ router.put('/products/:id', upload.fields([
   { name: "mainImage", maxCount: 1 },
   { name: "additionalImages", maxCount: 3 }
 ]), updateProduct);
+
+router.get('/productsName',getProductNames);
 
 
 // router.post('/reset-sale-count', resetSaleCount);
