@@ -31,12 +31,12 @@ const upload = multer({ storage: storage });
 
 router.post('/products', upload.fields([
   { name: "mainImage", maxCount: 1 },
-  { name: "additionalImages", maxCount: 3 },
+  { name: "additionalImages", maxCount: 10 },
 ]), addProduct);
 
 router.put('/products/:id', upload.fields([
   { name: "mainImage", maxCount: 1 },
-  { name: "additionalImages", maxCount: 3 }
+  { name: "additionalImages", maxCount: 10 }
 ]), updateProduct);
 
 router.get('/productsName',getProductNames);

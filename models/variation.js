@@ -7,6 +7,7 @@ const VariationSchema = new mongoose.Schema({
     required: [true, "Please provide a product name"],
   },
   quantity:Number,
+  itemQty:Number,
   productId: {
     type: mongoose.Schema.ObjectId,
     ref: "Product",

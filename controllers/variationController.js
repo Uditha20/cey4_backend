@@ -21,11 +21,13 @@ export const addVariation = async (req, res) => {
         name,
         quantity,
         productId,
+        itemQty
       } = req.body;
 
       const newVariation = new Variation({
         name,
         quantity,
+        itemQty,
         productId,
         price,
         xlPrice,

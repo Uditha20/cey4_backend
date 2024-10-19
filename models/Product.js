@@ -167,7 +167,7 @@ const ProductSchema = new mongoose.Schema(
       },
     },
     features:[String],
-    department: String,
+    department: [String],
     shape: String,
     countryOfManufacture: {
       type: String,
@@ -179,7 +179,7 @@ const ProductSchema = new mongoose.Schema(
     unitQuantity: String,
     productId: String,
     style: String,
-    occasion: String,
+    occasion:[String],
   },
   { timestamps: true }
 );
