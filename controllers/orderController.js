@@ -36,7 +36,7 @@ export const paymentSession = async (req, res, next) => {
   const lineItems = [
     {
       price_data: {
-        currency: "usd",
+        currency: "gbp",
         product_data: {
           name: "Total Order Amount",
         },
