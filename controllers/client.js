@@ -5,8 +5,6 @@ import Transaction from "../models/Transaction.js";
 // import getCountryIso3 from "country-iso-2-to-3";
 // controllers/productController.js
 
-
-
 export const addProduct = async (req, res) => {
   try {
     const {
@@ -41,7 +39,7 @@ export const addProduct = async (req, res) => {
       unitQuantity = 1, // default to 1 for quantity
       productId = "",
       style = "",
-      occasion = ""
+      occasion = "",
     } = req.body;
 
     // Parse JSON values or set default empty object/array
@@ -56,12 +54,14 @@ export const addProduct = async (req, res) => {
       : { width: 0, height: 0, length: 0 }; // default structure
 
     // Handle file uploads, default to null or empty array
-    const mainImage = req.files && req.files["mainImage"]
-      ? req.files["mainImage"][0].path
-      : null;
-    const additionalImages = req.files && req.files["additionalImages"]
-      ? req.files["additionalImages"].map((file) => file.path)
-      : [];
+    const mainImage =
+      req.files && req.files["mainImage"]
+        ? req.files["mainImage"][0].path
+        : null;
+    const additionalImages =
+      req.files && req.files["additionalImages"]
+        ? req.files["additionalImages"].map((file) => file.path)
+        : [];
 
     const newProduct = new Product({
       sku,
@@ -102,7 +102,7 @@ export const addProduct = async (req, res) => {
       productId,
       style,
       itemRelatedParts,
-      occasion
+      occasion,
     });
 
     const savedProduct = await newProduct.save();
@@ -112,7 +112,7 @@ export const addProduct = async (req, res) => {
   }
 };
 
-export const updateProduct = async (req, res) => {  
+export const updateProduct = async (req, res) => {
   try {
     const id = req.params.id;
 
@@ -122,71 +122,50 @@ export const updateProduct = async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    // Extract fields from request body
     const {
-      sku,
       name,
-      price,
+      sku,
       discount,
-      offerEnd,
-      new: isNew,
-      rating,
-      saleCount,
-      category,
-      tag,
-      stock,
-      shortDescription,
-      fullDescription,
-      deliveryCost,
-      deliveryCostTwo
+      "dimensions.dheight": dheight,
+      "dimensions.dwidth": dwidth,
+      "dimensions.dlength": dlength,
     } = req.body;
+    const mainImage =
+      req.files && req.files["mainImage"]
+        ? req.files["mainImage"][0].path
+        : null;
 
-    // Handle main image and additional images
-    const mainImage = req.files && req.files["mainImage"]
-      ? req.files["mainImage"][0].path
-      : product.mainImage;
-
-    const additionalImages = req.files && req.files["additionalImages"]
-      ? req.files["additionalImages"].map((file) => file.path)
-      : product.additionalImages;
-
-    // Build an object with only provided fields
-    const updatedProduct = {
-      sku: sku || product.sku,
-      name: name || product.name,
-      price: price || product.price,
-      discount: discount || product.discount,
-      offerEnd: offerEnd || product.offerEnd,
-      new: typeof isNew !== 'undefined' ? isNew : product.new,
-      rating: rating || product.rating,
-      saleCount: saleCount || product.saleCount,
-      category: category || product.category,
-      tag: tag || product.tag,
-      stock: stock || product.stock,
-      shortDescription: shortDescription || product.shortDescription,
-      fullDescription: fullDescription || product.fullDescription,
-      mainImage,
-      additionalImages,
-      deliveryCost: deliveryCost || product.deliveryCost,
-      deliveryCostTwo: deliveryCostTwo || product.deliveryCostTwo
+    const additionalImages =
+      req.files && req.files["additionalImages"]
+        ? req.files["additionalImages"].map((file) => file.path)
+        : [];
+    const dimensions = {
+      dheight: dheight,
+      dwidth: dwidth,
+      dlength: dlength,
     };
+    const updatedProduct = await Product.findByIdAndUpdate(
+      req.params.id,
+      { name, sku, discount, dimensions, mainImage,additionalImages },
+      { new: true }
+    );
 
-    // Perform the update
-    const updated = await Product.findByIdAndUpdate(id, updatedProduct, {
-      new: true,
-    });
+    if (!updatedProduct) {
+      return res.status(404).send({ message: "Product not found" });
+    }
 
-    // Respond with the updated product
-    res.status(200).json(updated);
+    res.status(200).send({ message: "Product updated", updatedProduct });
   } catch (error) {
     // Log the full error for troubleshooting
     console.error("Error updating product:", error);
 
     // Return a more descriptive error response
-    res.status(500).json({ message: "Error updating product", error: error.message || "Unknown error" });
+    res.status(500).json({
+      message: "Error updating product",
+      error: error.message || "Unknown error",
+    });
   }
 };
-
 
 export const getProducts = async (req, res) => {
   try {
@@ -283,17 +262,14 @@ export const getGeography = async (req, res) => {
   }
 };
 
-
-
 export const getProductNames = async (req, res) => {
   try {
-    const products = await Product.find({}, 'id name');
+    const products = await Product.find({}, "id name");
     res.status(200).json(products);
   } catch (error) {
-    res.status(500).json({ message: 'Error retrieving product names', error });
+    res.status(500).json({ message: "Error retrieving product names", error });
   }
 };
-
 
 // export const resetSaleCount = async (req, res) => {
 //   try {
