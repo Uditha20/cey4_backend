@@ -129,25 +129,53 @@ export const updateProduct = async (req, res) => {
       "dimensions.dheight": dheight,
       "dimensions.dwidth": dwidth,
       "dimensions.dlength": dlength,
+      "price.basePrice": basePrice,
+      "price.oneDayPremium": oneDayPremium,
+      "price.oneDayPremiumSecondItem": oneDayPremiumSecondItem,
+      "price.twoDayPremium": twoDayPremium,
+      "price.twoDayPremiumSecondItem": twoDayPremiumSecondItem,
     } = req.body;
     const mainImage =
-      req.files && req.files["mainImage"]
+      req.files && req.files["mainImage"] && req.files["mainImage"].length > 0
         ? req.files["mainImage"][0].path
-        : null;
+        : product.mainImage; // Keep existing mainImage if none provided
 
     const additionalImages =
-      req.files && req.files["additionalImages"]
+      req.files &&
+      req.files["additionalImages"] &&
+      req.files["additionalImages"].length > 0
         ? req.files["additionalImages"].map((file) => file.path)
-        : [];
+        : product.additionalImages; // Keep existing additionalImages if none provided
+
+    // Build the dimensions and price objects
     const dimensions = {
-      dheight: dheight,
-      dwidth: dwidth,
-      dlength: dlength,
+      dheight: dheight || product.dimensions.dheight,
+      dwidth: dwidth || product.dimensions.dwidth,
+      dlength: dlength || product.dimensions.dlength,
     };
+
+    const price = {
+      basePrice: basePrice || product.price.basePrice,
+      oneDayPremium: oneDayPremium || product.price.oneDayPremium,
+      oneDayPremiumSecondItem:
+        oneDayPremiumSecondItem || product.price.oneDayPremiumSecondItem,
+      twoDayPremium: twoDayPremium || product.price.twoDayPremium,
+      twoDayPremiumSecondItem:
+        twoDayPremiumSecondItem || product.price.twoDayPremiumSecondItem,
+    };
+
     const updatedProduct = await Product.findByIdAndUpdate(
-      req.params.id,
-      { name, sku, discount, dimensions, mainImage,additionalImages },
-      { new: true }
+      id,
+      {
+        name: name || product.name,
+        sku: sku || product.sku,
+        discount: discount || product.discount,
+        dimensions,
+        price,
+        mainImage,
+        additionalImages,
+      },
+      { new: true } // Return the updated product
     );
 
     if (!updatedProduct) {
