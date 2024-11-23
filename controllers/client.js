@@ -134,6 +134,11 @@ export const updateProduct = async (req, res) => {
       "price.oneDayPremiumSecondItem": oneDayPremiumSecondItem,
       "price.twoDayPremium": twoDayPremium,
       "price.twoDayPremiumSecondItem": twoDayPremiumSecondItem,
+     
+      weight,
+      stock,
+      shortDescription,
+      fullDescription,
     } = req.body;
     const mainImage =
       req.files && req.files["mainImage"] && req.files["mainImage"].length > 0
@@ -164,6 +169,8 @@ export const updateProduct = async (req, res) => {
         twoDayPremiumSecondItem || product.price.twoDayPremiumSecondItem,
     };
 
+    
+
     const updatedProduct = await Product.findByIdAndUpdate(
       id,
       {
@@ -174,6 +181,12 @@ export const updateProduct = async (req, res) => {
         price,
         mainImage,
         additionalImages,
+        // rating: rating || product.rating,
+        weight: weight || product.weight,
+        stock: stock || product.stock,
+        shortDescription: shortDescription,
+        fullDescription: fullDescription 
+
       },
       { new: true } // Return the updated product
     );
