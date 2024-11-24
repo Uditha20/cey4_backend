@@ -139,6 +139,8 @@ export const updateProduct = async (req, res) => {
       stock,
       shortDescription,
       fullDescription,
+      itemType,
+      handmade
     } = req.body;
     const mainImage =
       req.files && req.files["mainImage"] && req.files["mainImage"].length > 0
@@ -185,7 +187,9 @@ export const updateProduct = async (req, res) => {
         weight: weight || product.weight,
         stock: stock || product.stock,
         shortDescription: shortDescription,
-        fullDescription: fullDescription 
+        fullDescription: fullDescription,
+        itemType: itemType || product.itemType,
+        handmade: handmade || product.handmade
 
       },
       { new: true } // Return the updated product
