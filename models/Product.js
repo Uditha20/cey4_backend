@@ -141,18 +141,7 @@ const ProductSchema = new mongoose.Schema(
     capacity: String,
     capacityMeasure: String,
 
-    colors: [
-      {
-        name: {
-          type: String, // Color name (e.g., Red, Blue, Black)
-
-        },
-        image: {
-          type: String, // Image URL for this color
-          
-        },
-      },
-    ],
+    colour: String,
     itemType: String,
     itemRelatedParts:{
       partName: String,

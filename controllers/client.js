@@ -27,7 +27,7 @@ export const addProduct = async (req, res) => {
       weightMeasure = "",
       capacity = 0,
       capacityMeasure = "",
-      colours = [], // default to an empty array
+      colour = "", // default to an empty array
       itemType = "",
       features = [],
       department = "",
@@ -88,7 +88,7 @@ export const addProduct = async (req, res) => {
       weightMeasure,
       capacity,
       capacityMeasure,
-      colours,
+      colour,
       dimensions,
       itemType,
       features,
@@ -140,7 +140,8 @@ export const updateProduct = async (req, res) => {
       shortDescription,
       fullDescription,
       itemType,
-      handmade
+      handmade,
+      colour
     } = req.body;
     const mainImage =
       req.files && req.files["mainImage"] && req.files["mainImage"].length > 0
@@ -189,7 +190,8 @@ export const updateProduct = async (req, res) => {
         shortDescription: shortDescription,
         fullDescription: fullDescription,
         itemType: itemType || product.itemType,
-        handmade: handmade || product.handmade
+        handmade: handmade || product.handmade,
+        colour: colour || product.colour
 
       },
       { new: true } // Return the updated product
