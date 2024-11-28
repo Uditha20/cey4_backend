@@ -19,7 +19,7 @@ export const createCategory = async (req, res) => {
 
 export const getCategories = async (req, res) => {  
   try {
-    const categories = await Category.find();
+    const categories = await Category.find({isActive:true});
     res.status(200).json(categories);
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -34,3 +34,27 @@ export const getCategory = async (req, res) => {
     res.status(404).json({ message: error.message });
   }
 }
+
+export const updateCategoryStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Find and update the category's isActive field
+    const updatedCategory = await Category.findByIdAndUpdate(
+      id,
+      { isActive: false },
+      { new: true } // Return the updated document
+    );
+
+    if (!updatedCategory) {
+      return res.status(404).json({ message: "Category not found" });
+    }
+
+    res.status(200).json({
+      message: "Category status updated successfully"
+    });
+  } catch (error) {
+    console.error("Error updating category status:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
