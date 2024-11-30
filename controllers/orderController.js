@@ -10,7 +10,7 @@ export const createOrder = async (req, res) => {
 
     const newOrder = new Order({
       items,
-    
+
       overallTotal,
       billingInfo,
       createdAt: new Date(),
@@ -47,7 +47,6 @@ export const paymentSession = async (req, res, next) => {
   ];
 
   try {
-    
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: lineItems,
@@ -63,7 +62,7 @@ export const paymentSession = async (req, res, next) => {
         orderId: orderId, // This is still useful for the session itself
       },
     });
-   
+
     res.json({ id: session.id });
   } catch (error) {
     console.error("Error creating payment session:", error);
@@ -128,9 +127,6 @@ export const getAllOrders = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
-
-
-
 
 export const getOrderById = async (req, res) => {
   try {

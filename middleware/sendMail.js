@@ -16,9 +16,6 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-
-
-
 export const sendEmail = async (to, subject, text, verificationToken) => {
   try {
     const info = await transporter.sendMail({
@@ -55,5 +52,40 @@ export const sendWelcomeEmail = async (email, name) => {
   } catch (error) {
     console.error("Error sending welcome email:", error);
     throw new Error(`Error sending welcome email: ${error.message}`);
+  }
+};
+
+export const sendOrderEmail = async (email, order) => {
+  // Construct order details template
+  const orderDetailsTemplate = `
+    <h2>Thank you for your order!</h2>
+   
+    <p>Your order has been confirmed. Below are your order details:</p>
+   
+
+    <h4>Items:</h4>
+   
+    <p>We appreciate your business and look forward to serving you again!</p>
+  `;
+
+  try {
+    // Define email content
+    const mailOptions = {
+      from: "CEY4HUB <inquiry@cey4hub.com>", // Sender name and email
+      to: email, // Recipient's email
+      subject: "Order Confirmation",
+      html: orderDetailsTemplate,
+    };
+
+    // Send the email
+    const response = await transporter.sendMail(mailOptions);
+
+    console.log(
+      "Order confirmation email sent successfully",
+      response.messageId
+    );
+  } catch (error) {
+    console.error("Error sending order confirmation email:", error);
+    throw new Error(`Error sending order confirmation email: ${error.message}`);
   }
 };

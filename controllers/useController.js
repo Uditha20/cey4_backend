@@ -123,7 +123,7 @@ export const loginUser = async (req, res) => {
     }
 
     // Generate JWT token
-    generateToken(user._id, user.role, res);
+    const token = generateToken(user._id, user.role, res);
     user.lastLogin = new Date();
     await user.save();
 
@@ -131,6 +131,7 @@ export const loginUser = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Logged in successfully",
+      token,
       user: {
         ...user._doc,
         password: undefined,
