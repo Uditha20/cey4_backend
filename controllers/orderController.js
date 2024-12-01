@@ -132,8 +132,9 @@ export const getOrderById = async (req, res) => {
   try {
     const { orderId } = req.params;
 
-    // Find the order by ID
-    const order = await Order.findById(orderId);
+    // Find the order by ID and populate the 'product' field in 'items'
+    const order = await Order.findById(orderId)
+    .populate("items.product", "name"); // Populate the product reference
 
     // If no order is found, return a 404 error
     if (!order) {

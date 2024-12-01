@@ -39,16 +39,17 @@ router.post(
 
         if (order && order.status === "pending") {
           order.status = "confirmed";
-         
 
           // Save the order and check the result
           const result = await order.save();
-     console.log(result);
+          console.log(result);
           if (result && result._id) {
             console.log("Order status updated successfully!");
 
             try {
               // Send confirmation email
+              const result = await Order.findById(orderId)
+              .populate("items.product", "name");
               await sendOrderEmail(result.billingInfo.email, result);
               console.log("Order confirmation email sent successfully!");
             } catch (emailError) {
