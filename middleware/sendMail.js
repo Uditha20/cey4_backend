@@ -100,7 +100,7 @@ export const sendOrderEmail = async (email, order) => {
         ${billingInfoHtml}
 
         <h4>Total:</h4>
-        <p><strong>Overall Total: </strong>$${order.overallTotal.toFixed(2)}</p>
+        <p><strong>Overall Total: </strong>${order.overallTotal.toFixed(2)}</p>
 
         <p>You will receive another email once your order has been shipped, with tracking details.</p>
 
