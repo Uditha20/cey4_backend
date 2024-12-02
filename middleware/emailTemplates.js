@@ -38,11 +38,11 @@ export const WELCOME_EMAIL_TEMPLATE = `
 </head>
 <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
   <div style="background: linear-gradient(to right, #4CAF50, #45a049); padding: 20px; text-align: center;">
-    <h1 style="color: white; margin: 0;">Welcome to C4Hub!</h1>
+    <h1 style="color: white; margin: 0;">Welcome to Cey4Hub!</h1>
   </div>
   <div style="background-color: #f9f9f9; padding: 20px; border-radius: 0 0 5px 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
     <p>Dear {name},</p>
-    <p>We’re delighted to welcome you to <strong>C4Hub</strong>, the e-commerce platform dedicated to selling eco-friendly products.</p>
+    <p>We’re delighted to welcome you to <strong>Cey4Hub</strong>, the e-commerce platform dedicated to selling eco-friendly products.</p>
     <p>At cey4Hub, we believe in making sustainable choices simple and accessible for everyone. By joining our community, you’re contributing to a greener, better future.</p>
     <p>Explore our wide range of environmentally friendly products and start making a difference today!</p>
     <p>Thank you for choosing us. If you have any questions, we’re here to help.</p>

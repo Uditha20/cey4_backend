@@ -41,7 +41,7 @@ export const sendWelcomeEmail = async (email, name) => {
     const mailOptions = {
       from: "CEY4HUB<inquiry@cey4hub.com>", // Sender name and email
       to: email, // Recipient's email
-      subject: "Welcome to CEY4HUB Company!",
+      subject: "Welcome to CEY4HUB..",
       html: personalizedTemplate,
     };
 

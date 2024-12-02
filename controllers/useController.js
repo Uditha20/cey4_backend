@@ -225,8 +225,10 @@ export const resetPassword = async (req, res) => {
 
 export const getUserProfile = async (req, res) => {
   try {
-    const user = await User.findById(req.user._id).select("-password");
-    res.status(200).json(user);
+    res.json({
+      success: true,
+      user: req.user, // The user data added by the middleware
+    });
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
