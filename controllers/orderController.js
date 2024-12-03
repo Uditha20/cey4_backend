@@ -51,7 +51,7 @@ export const paymentSession = async (req, res, next) => {
       payment_method_types: ["card"],
       line_items: lineItems,
       mode: "payment",
-      success_url: process.env.MAINURL,
+      success_url:`${process.env.MAINURL}/order-confirm`,
       cancel_url: `${process.env.MAINURL}/login-register`,
       payment_intent_data: {
         metadata: {
