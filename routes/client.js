@@ -11,6 +11,7 @@ import {
 
 import multer from "multer";
 import protect from "../middleware/authMiddleware.js";
+import { addVariation } from "../controllers/variationController.js";
 const router = express.Router();
 
 router.get("/products", getProducts);
@@ -38,6 +39,13 @@ router.put('/products/:id', upload.fields([
   { name: "mainImage", maxCount: 1 },
   { name: "additionalImages", maxCount: 10 }
 ]), updateProduct);
+
+
+router.post('/createVariation', upload.fields([
+  { name: "mainImage", maxCount: 1 },
+  { name: "additionalImages", maxCount: 3 },
+]), addVariation);
+
 
 router.get('/productsName',getProductNames);
 
