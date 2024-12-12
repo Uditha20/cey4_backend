@@ -6,13 +6,14 @@ import Stripe from "stripe";
 // Function to create a new order
 export const createOrder = async (req, res) => {
   try {
-    const { items, overallTotal, billingInfo } = req.body;
+    const { items, overallTotal, billingInfo, deliveryInfo } = req.body;
 
     const newOrder = new Order({
       items,
 
       overallTotal,
       billingInfo,
+      deliveryInfo,
       createdAt: new Date(),
     });
 
@@ -103,6 +104,7 @@ export const getAllOrders = async (req, res) => {
           totalDeliveryCost: { $first: "$totalDeliveryCost" },
           overallTotal: { $first: "$overallTotal" },
           billingInfo: { $first: "$billingInfo" },
+          // deliveryInfo: { $first: "$deliveryInfo" },
           createdAt: { $first: "$createdAt" },
         },
       },

@@ -169,8 +169,11 @@ const ProductSchema = new mongoose.Schema(
     productId: String,
     style: String,
     occasion:[String],
+    isAcive:{ type: Boolean, default: true }  
+
   },
-  { timestamps: true }
+  
+  { timestamps: true },
 );
 
 const Product = mongoose.model("Product", ProductSchema);

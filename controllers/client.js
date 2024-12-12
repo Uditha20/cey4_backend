@@ -318,6 +318,22 @@ export const getProductNames = async (req, res) => {
   }
 };
 
+export const updateProducts = async (req,res) => {
+  try {
+    
+    const result=await Product.updateMany(
+      { isActive: { $exists: false } },
+      { $set: { isActive: true } }
+    );
+    res.status(200).json({ message: "Updated  products"});
+  } catch (err) {
+    console.error('Error updating products:', err);
+   
+  }
+};
+
+
+
 // export const resetSaleCount = async (req, res) => {
 //   try {
 //     const result = await Product.updateMany({}, { $set: { saleCount: 0 } });
