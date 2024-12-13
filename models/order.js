@@ -32,6 +32,8 @@ const orderSchema = new mongoose.Schema({
     orderNotes: { type: String },
   },
   deliveryInfo: {
+    DeliveryFullName: { type: String },
+    DeliveryStreetAddress: { type: String },
     DeliveryApartment: { type: String },
     DeliveryCity: { type: String },
     DeliveryState: { type: String },
