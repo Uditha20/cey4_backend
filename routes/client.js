@@ -44,7 +44,7 @@ router.put('/products/:id', upload.fields([
 
 router.post('/createVariation', upload.fields([
   { name: "mainImage", maxCount: 1 },
-  { name: "additionalImages", maxCount: 3 },
+  { name: "additionalImages", maxCount: 10 },
 ]), addVariation);
 
 
