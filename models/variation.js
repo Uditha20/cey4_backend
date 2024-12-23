@@ -13,6 +13,9 @@ const VariationSchema = new mongoose.Schema({
     ref: "Product",
     required: true,
   },
+  variationId: {
+    type:String
+  },
   price: {
     basePrice: {
       type: Number,

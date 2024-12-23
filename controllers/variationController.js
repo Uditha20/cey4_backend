@@ -21,7 +21,8 @@ export const addVariation = async (req, res) => {
         name,
         quantity,
         productId,
-        itemQty
+        itemQty,
+        variationId
       } = req.body;
 
       const newVariation = new Variation({
@@ -29,6 +30,7 @@ export const addVariation = async (req, res) => {
         quantity,
         itemQty,
         productId,
+        variationId,
         price,
         xlPrice,
         mdPrice,
@@ -46,15 +48,18 @@ export const addVariation = async (req, res) => {
   };
   
 
-export const getVariations = async (req, res) => {
+  export const getVariations = async (req, res) => {
     try {
-        const variations = await Variation.find();
-        res.status(200).json(variations);
+      const variations = await Variation.find().populate({
+        path: "productId", // The field in Variation schema to populate
+        select: "name", // Select specific fields from the Product model (optional)
+      });
+  
+      res.status(200).json(variations);
     } catch (error) {
-        res.status(404).json({ message: error.message });
+      res.status(404).json({ message: error.message });
     }
-    };
-
+  };
 export const getVariation = async (req, res) => {
     const { id } = req.params;
     try {

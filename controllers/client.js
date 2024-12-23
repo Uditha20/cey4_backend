@@ -40,6 +40,7 @@ export const addProduct = async (req, res) => {
       productId = "",
       style = "",
       occasion = "",
+     
     } = req.body;
 
     // Parse JSON values or set default empty object/array
@@ -103,6 +104,7 @@ export const addProduct = async (req, res) => {
       style,
       itemRelatedParts,
       occasion,
+
     });
 
     const savedProduct = await newProduct.save();
@@ -134,6 +136,11 @@ export const updateProduct = async (req, res) => {
       "price.oneDayPremiumSecondItem": oneDayPremiumSecondItem,
       "price.twoDayPremium": twoDayPremium,
       "price.twoDayPremiumSecondItem": twoDayPremiumSecondItem,
+      "itemRelatedParts.partName": partName,
+      "itemRelatedParts.width": partWidth,
+      "itemRelatedParts.height": partHeight,
+      "itemRelatedParts.length": partLength,
+
      
       weight,
       stock,
@@ -141,7 +148,19 @@ export const updateProduct = async (req, res) => {
       fullDescription,
       itemType,
       handmade,
-      colour
+      colour,
+      capacityMeasure,
+      indoorOutdoor,
+      originalReproduction,
+      rating,
+      features,
+      occasion,
+      category,
+      department,
+      shape,
+      style,
+      productId
+
     } = req.body;
     const mainImage =
       req.files && req.files["mainImage"] && req.files["mainImage"].length > 0
@@ -171,7 +190,15 @@ export const updateProduct = async (req, res) => {
       twoDayPremiumSecondItem:
         twoDayPremiumSecondItem || product.price.twoDayPremiumSecondItem,
     };
+   
+    // Build the itemRelatedParts object
 
+    const itemRelatedParts = {
+      partName: partName || product.itemRelatedParts.partName,
+      width: partWidth || product.itemRelatedParts.width,
+      height: partHeight || product.itemRelatedParts.height,
+      length: partLength || product.itemRelatedParts.length,
+    };
     
 
     const updatedProduct = await Product.findByIdAndUpdate(
@@ -184,6 +211,7 @@ export const updateProduct = async (req, res) => {
         price,
         mainImage,
         additionalImages,
+        itemRelatedParts,
         // rating: rating || product.rating,
         weight: weight || product.weight,
         stock: stock || product.stock,
@@ -191,7 +219,20 @@ export const updateProduct = async (req, res) => {
         fullDescription: fullDescription,
         itemType: itemType || product.itemType,
         handmade: handmade || product.handmade,
-        colour: colour || product.colour
+        colour: colour || product.colour,
+        capacityMeasure: capacityMeasure || product.capacityMeasure,
+        indoorOutdoor: indoorOutdoor || product.indoorOutdoor,  
+        originalReproduction: originalReproduction || product.originalReproduction,
+        rating: rating || product.rating,
+        features: features || product.features,
+        occasion: occasion || product.occasion,
+        category: category || product.category,
+        department: department || product.department,
+        shape: shape || product.shape ,
+        style: style || product.style,
+        productId: productId || product.productId
+
+
 
       },
       { new: true } // Return the updated product
