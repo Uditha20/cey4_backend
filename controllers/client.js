@@ -40,7 +40,6 @@ export const addProduct = async (req, res) => {
       productId = "",
       style = "",
       occasion = "",
-     
     } = req.body;
 
     // Parse JSON values or set default empty object/array
@@ -104,7 +103,6 @@ export const addProduct = async (req, res) => {
       style,
       itemRelatedParts,
       occasion,
-
     });
 
     const savedProduct = await newProduct.save();
@@ -141,7 +139,6 @@ export const updateProduct = async (req, res) => {
       "itemRelatedParts.height": partHeight,
       "itemRelatedParts.length": partLength,
 
-     
       weight,
       stock,
       shortDescription,
@@ -159,8 +156,7 @@ export const updateProduct = async (req, res) => {
       department,
       shape,
       style,
-      productId
-
+      productId,
     } = req.body;
     const mainImage =
       req.files && req.files["mainImage"] && req.files["mainImage"].length > 0
@@ -190,7 +186,7 @@ export const updateProduct = async (req, res) => {
       twoDayPremiumSecondItem:
         twoDayPremiumSecondItem || product.price.twoDayPremiumSecondItem,
     };
-   
+
     // Build the itemRelatedParts object
 
     const itemRelatedParts = {
@@ -199,7 +195,6 @@ export const updateProduct = async (req, res) => {
       height: partHeight || product.itemRelatedParts.height,
       length: partLength || product.itemRelatedParts.length,
     };
-    
 
     const updatedProduct = await Product.findByIdAndUpdate(
       id,
@@ -221,19 +216,17 @@ export const updateProduct = async (req, res) => {
         handmade: handmade || product.handmade,
         colour: colour || product.colour,
         capacityMeasure: capacityMeasure || product.capacityMeasure,
-        indoorOutdoor: indoorOutdoor || product.indoorOutdoor,  
-        originalReproduction: originalReproduction || product.originalReproduction,
+        indoorOutdoor: indoorOutdoor || product.indoorOutdoor,
+        originalReproduction:
+          originalReproduction || product.originalReproduction,
         rating: rating || product.rating,
         features: features || product.features,
         occasion: occasion || product.occasion,
         category: category || product.category,
         department: department || product.department,
-        shape: shape || product.shape ,
+        shape: shape || product.shape,
         style: style || product.style,
-        productId: productId || product.productId
-
-
-
+        productId: productId || product.productId,
       },
       { new: true } // Return the updated product
     );
@@ -257,7 +250,7 @@ export const updateProduct = async (req, res) => {
 
 export const getProducts = async (req, res) => {
   try {
-    const products = await Product.find();
+    const products = await Product.find({isDeleted: false});
 
     // const productsWithStats = await Promise.all(
     //   products.map(async (product) => {
@@ -359,21 +352,36 @@ export const getProductNames = async (req, res) => {
   }
 };
 
-export const updateProducts = async (req,res) => {
+export const updateProducts = async (req, res) => {
   try {
-    
-    const result=await Product.updateMany(
+    const result = await Product.updateMany(
       { isActive: { $exists: false } },
       { $set: { isActive: true } }
     );
-    res.status(200).json({ message: "Updated  products"});
+    res.status(200).json({ message: "Updated  products" });
   } catch (err) {
-    console.error('Error updating products:', err);
-   
+    console.error("Error updating products:", err);
   }
 };
 
+export const updateOneProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = await Product.findById(id);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+    product.isActive = !product.isActive;
 
+    // Save the updated product
+    await product.save();
+
+    // Respond with the updated product
+    res.status(200).json({ message: "Product updated successfully", product });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating product", error });
+  }
+};
 
 // export const resetSaleCount = async (req, res) => {
 //   try {
@@ -383,3 +391,23 @@ export const updateProducts = async (req,res) => {
 //     res.status(500).json({ message: 'Error updating saleCount', error });
 //   }
 // };
+
+export const deleteProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = await Product.findById(id);
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+    product.isDeleted = true;
+
+    // Save the updated product
+    await product.save();
+
+    // Respond with the updated product
+    res.status(200).json({ message: "Product delete successfully", product });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating product", error });
+  }
+};

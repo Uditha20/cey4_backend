@@ -169,7 +169,8 @@ const ProductSchema = new mongoose.Schema(
     productId: String,
     style: String,
     occasion:[String],
-    isAcive:{ type: Boolean, default: true }  
+    isActive:{ type: Boolean, default: true }  ,
+    isDeleted:{ type: Boolean, default: false } ,
 
   },
   

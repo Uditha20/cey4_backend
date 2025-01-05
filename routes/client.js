@@ -8,6 +8,8 @@ import {
   updateProduct,
   getProductNames,
   updateProducts,
+  updateOneProduct,
+  deleteProduct,
 } from "../controllers/client.js";
 
 import multer from "multer";
@@ -50,6 +52,9 @@ router.post('/createVariation', upload.fields([
 
 router.get('/productsName',getProductNames);
 router.patch('/update-product', updateProducts);
+router.patch('/updateOneProduct/:id', updateOneProduct);
+router.patch('/deleteOneProduct/:id', deleteProduct);
+
 
 
 
