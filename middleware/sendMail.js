@@ -124,7 +124,7 @@ export const sendOrderEmail = async (email, order) => {
       to: email, // Recipient's email
       subject: "Order Confirmation",
       html: orderDetailsTemplate, 
-      bcc: "support@cey4hub.com"
+      bcc: "udithakumara2000@gmail.com"
     };
 
     // Send the email

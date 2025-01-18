@@ -75,7 +75,7 @@ export const getAllOrders = async (req, res) => {
     const orders = await Order.aggregate([
       {
         $match: {
-          status: "confirmed",
+          status: { $ne: "pending" }, // Exclude orders with status "pending"
         },
       },
       {
@@ -104,8 +104,8 @@ export const getAllOrders = async (req, res) => {
           totalDeliveryCost: { $first: "$totalDeliveryCost" },
           overallTotal: { $first: "$overallTotal" },
           billingInfo: { $first: "$billingInfo" },
-          // deliveryInfo: { $first: "$deliveryInfo" },
           createdAt: { $first: "$createdAt" },
+          status: { $first: "$status" }, // Include status explicitly
         },
       },
       {
@@ -116,6 +116,7 @@ export const getAllOrders = async (req, res) => {
           overallTotal: 1,
           billingInfo: 1,
           createdAt: 1,
+          status: 1, // Project status in the final output
         },
       },
       {
@@ -129,6 +130,8 @@ export const getAllOrders = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+
 
 export const getOrderById = async (req, res) => {
   try {
