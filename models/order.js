@@ -46,6 +46,8 @@ const orderSchema = new mongoose.Schema({
     type: String,
     default: "pending",
   },
+  trackId: { type: String },
+  shippingMethod: { type: String },
   createdAt: { type: Date, default: Date.now },
 });
 
