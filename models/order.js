@@ -49,6 +49,8 @@ const orderSchema = new mongoose.Schema({
   trackId: { type: String },
   shippingMethod: { type: String },
   createdAt: { type: Date, default: Date.now },
+  customOrderId: { type: Number }, 
+  customFullOrderId: { type: String }, 
 });
 
 const Order = mongoose.model("Order", orderSchema);

@@ -38,7 +38,30 @@ router.post(
         const order = await Order.findById(orderId);
 
         if (order && order.status === "pending") {
+          const lastOrder = await Order.findOne({
+            customOrderId: { $exists: true },
+          }).sort({ customOrderId: -1 });
+
+          let newCustomOrderId = 1; // Default if no previous orders exist
+
+          if (lastOrder && lastOrder.customOrderId) {
+              newCustomOrderId = lastOrder.customOrderId + 1;
+          }
+      
+          // Get the current date and time
+          const now = new Date();
+          const formattedDate = now.toISOString().split("T")[0].replace(/-/g, "."); // YYYY.MM.DD
+          const formattedTime = now
+              .toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })
+              .replace(":", "."); // HH.MM
+      
+          // Generate customFullOrderId (Example: 2025.01.28/01.35/08)
+          const customFullOrderId = `${formattedDate}/${formattedTime}/${String(newCustomOrderId).padStart(2, "0")}`;
+      
+          // Update the order with the new values
           order.status = "confirmed";
+          order.customOrderId = newCustomOrderId;
+          order.customFullOrderId = customFullOrderId;
 
           // Save the order and check the result
           const result = await order.save();
@@ -48,8 +71,10 @@ router.post(
 
             try {
               // Send confirmation email
-              const result = await Order.findById(orderId)
-              .populate("items.product", "name");
+              const result = await Order.findById(orderId).populate(
+                "items.product",
+                "name"
+              );
               await sendOrderEmail(result.billingInfo.email, result);
               console.log("Order confirmation email sent successfully!");
             } catch (emailError) {

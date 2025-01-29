@@ -10,7 +10,6 @@ export const createOrder = async (req, res) => {
 
     const newOrder = new Order({
       items,
-
       overallTotal,
       billingInfo,
       deliveryInfo,
@@ -105,7 +104,8 @@ export const getAllOrders = async (req, res) => {
           overallTotal: { $first: "$overallTotal" },
           billingInfo: { $first: "$billingInfo" },
           createdAt: { $first: "$createdAt" },
-          status: { $first: "$status" }, // Include status explicitly
+          status: { $first: "$status" },
+          customFullOrderId:{$first:"$customFullOrderId"} // Include status explicitly
         },
       },
       {
@@ -117,6 +117,7 @@ export const getAllOrders = async (req, res) => {
           billingInfo: 1,
           createdAt: 1,
           status: 1, // Project status in the final output
+          customFullOrderId:1
         },
       },
       {
