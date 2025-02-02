@@ -69,6 +69,8 @@ export const paymentSession = async (req, res, next) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+// Function to handle all orders
 export const getAllOrders = async (req, res) => {
   try {
     const orders = await Order.aggregate([
@@ -132,22 +134,23 @@ export const getAllOrders = async (req, res) => {
   }
 };
 
+// Function to get a single order by ID
 export const getOrderById = async (req, res) => {
   try {
     const { orderId } = req.params;
 
-    // Find the order by ID and populate the 'product' field in 'items'
+  
     const order = await Order.findById(orderId).populate(
       "items.product",
       "name"
-    ); // Populate the product reference
+    ); 
 
-    // If no order is found, return a 404 error
+ 
     if (!order) {
       return res.status(404).json({ message: "Order not found" });
     }
 
-    // If the order is found, return it
+   
     res.status(200).json(order);
   } catch (error) {
     console.error("Error finding order:", error);
@@ -155,28 +158,25 @@ export const getOrderById = async (req, res) => {
   }
 };
 
+// Function to update order status
 export const updateOrderStatus = async (req, res) => {
   try {
-    // Extract orderId from the request body
     const { orderId, trackId, shippingMethod, orderStatus } = req.body;
-
-    // Find the order by ID and update its status, tracking ID, and shipping method
     const updatedOrder = await Order.findByIdAndUpdate(
       orderId,
       {
-        status: orderStatus, // Update the order status
-        trackId, // Update the tracking ID
-        shippingMethod, // Update the shipping method
+        status: orderStatus, 
+        trackId, 
+        shippingMethod, 
       },
-      { new: true } // Return the updated document
+      { new: true }
     );
 
-    // If no order is found, return a 404 error
+   
     if (!updatedOrder) {
       return res.status(404).json({ message: "Order not found" });
     }
 
-    // If the order is found and updated, return it
     res.status(200).json(updatedOrder);
   } catch (error) {
     console.error("Error updating order status:", error);
