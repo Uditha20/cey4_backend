@@ -69,3 +69,42 @@ export const getVariation = async (req, res) => {
         res.status(404).json({ message: error.message });
     }
     } ;
+
+    export const updateVariation = async (req, res) => {  
+
+      const { id } = req.params;
+      const {
+        name,
+        quantity,
+        productId,
+        itemQty,
+        variationId,
+      
+    
+        mainImage,
+        
+      } = req.body;
+
+      const price = req.body.price ? JSON.parse(req.body.price) : 0;
+  
+      let variation = await Variation.findById(id);
+      if (!variation) {
+        return res.status(404).json({ message: "Variation not found" });
+      }
+  
+      const updatedVariation = {
+        name,
+        quantity,
+        productId,
+        itemQty,
+        variationId,
+        price,
+        mainImage,
+    
+        _id: id,
+      };
+  
+      await Variation.findByIdAndUpdate(id, updatedVariation, { new: true });
+  
+      res.json(updatedVariation);
+    } 
