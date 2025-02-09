@@ -49,6 +49,9 @@ export const addProduct = async (req, res) => {
     const itemRelatedParts = req.body.itemRelatedParts
       ? JSON.parse(req.body.itemRelatedParts)
       : { partName: "", width: 0, height: 0, length: 0 }; // default structure
+    const itemRelatedPartsTwo = req.body.itemRelatedPartsTwo
+      ? JSON.parse(req.body.itemRelatedPartsTwo)
+      : { partName: "", width: 0, height: 0, length: 0 }; // default structure  
     const dimensions = req.body.dimensions
       ? JSON.parse(req.body.dimensions)
       : { width: 0, height: 0, length: 0 }; // default structure
@@ -103,6 +106,7 @@ export const addProduct = async (req, res) => {
       style,
       itemRelatedParts,
       occasion,
+      itemRelatedPartsTwo,
     });
 
     const savedProduct = await newProduct.save();
@@ -250,7 +254,7 @@ export const updateProduct = async (req, res) => {
 
 export const getProducts = async (req, res) => {
   try {
-    const products = await Product.find({isDeleted: false});
+    const products = await Product.find({isDeleted: false, isActive: true});
 
     // const productsWithStats = await Promise.all(
     //   products.map(async (product) => {
@@ -269,6 +273,17 @@ export const getProducts = async (req, res) => {
     res.status(404).json({ message: error.message });
   }
 };
+
+export const getProductsForDashboard = async (req, res) => {  
+  try {
+    const products = await Product.find({isDeleted: false});
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+}
+
+
 
 export const getCustomers = async (req, res) => {
   try {

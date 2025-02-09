@@ -154,6 +154,20 @@ const ProductSchema = new mongoose.Schema(
       length: {
         type: Number,
       },
+      weight: Number,
+    },
+    itemRelatedPartsTwo:{
+      partName: String,
+      width: {
+        type: Number,
+      },
+      height: {
+        type: Number,
+      },
+      length: {
+        type: Number,
+      },
+      weight: Number,
     },
     features:[String],
     department: [String],
