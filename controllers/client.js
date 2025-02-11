@@ -142,6 +142,13 @@ export const updateProduct = async (req, res) => {
       "itemRelatedParts.width": partWidth,
       "itemRelatedParts.height": partHeight,
       "itemRelatedParts.length": partLength,
+      "itemRelatedParts.weight": partWeight,  
+      "itemRelatedPartsTwo.partName": partNameTwo,
+      "itemRelatedPartsTwo.width": partWidthTwo,
+      "itemRelatedPartsTwo.height": partHeightTwo,
+      "itemRelatedPartsTwo.length": partLengthTwo,
+      "itemRelatedPartsTwo.weight": partWeightTwo,
+
 
       weight,
       stock,
@@ -198,7 +205,16 @@ export const updateProduct = async (req, res) => {
       width: partWidth || product.itemRelatedParts.width,
       height: partHeight || product.itemRelatedParts.height,
       length: partLength || product.itemRelatedParts.length,
+      weight: partWeight || product.itemRelatedParts.weight,
     };
+    const itemRelatedPartsTwo = { 
+      partName: partNameTwo !== null ? partNameTwo : product.itemRelatedPartsTwo.partName,
+      width: partWidthTwo !== null ? partWidthTwo : product.itemRelatedPartsTwo.width,
+      height: partHeightTwo !== null ? partHeightTwo : product.itemRelatedPartsTwo.height,
+      length: partLengthTwo !== null ? partLengthTwo : product.itemRelatedPartsTwo.length,
+      weight: partWeightTwo !== null ? partWeightTwo : product.itemRelatedPartsTwo.weight,
+    };
+    
 
     const updatedProduct = await Product.findByIdAndUpdate(
       id,
@@ -211,6 +227,7 @@ export const updateProduct = async (req, res) => {
         mainImage,
         additionalImages,
         itemRelatedParts,
+        itemRelatedPartsTwo,
         // rating: rating || product.rating,
         weight: weight || product.weight,
         stock: stock || product.stock,
@@ -254,8 +271,9 @@ export const updateProduct = async (req, res) => {
 
 export const getProducts = async (req, res) => {
   try {
-    const products = await Product.find({isDeleted: false, isActive: true});
-
+    const products = await Product.find({
+      $and: [{ isDeleted: false }, { isActive: true }]
+    });
     // const productsWithStats = await Promise.all(
     //   products.map(async (product) => {
     //     const stat = await ProductStat.find({
@@ -274,6 +292,9 @@ export const getProducts = async (req, res) => {
   }
 };
 
+
+
+
 export const getProductsForDashboard = async (req, res) => {  
   try {
     const products = await Product.find({isDeleted: false});
@@ -284,6 +305,17 @@ export const getProductsForDashboard = async (req, res) => {
 }
 
 
+export const getActiveProductCount = async (req, res) => {
+  try {
+    // Count only active products
+    // const count = await Product.countDocuments({ isDeleted: true });
+    const products = await Product.find({isDeleted: true});
+
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json({ message: 'Error counting active products', error });
+  }
+};
 
 export const getCustomers = async (req, res) => {
   try {
