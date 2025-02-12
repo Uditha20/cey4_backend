@@ -233,3 +233,30 @@ export const getUserProfile = async (req, res) => {
     res.status(404).json({ message: error.message });
   }
 };
+
+
+export const updateUserProfile = async (req, res) => {
+  try {
+    const userId = req.params.id; // Get user ID from URL params
+    const { name, phoneNumber, state, city, country } = req.body;
+
+    // Find and update user
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { name, phoneNumber, state, city, country },
+      { new: true, runValidators: true } // Return updated user & validate inputs
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({
+      message: "Profile updated successfully",
+      user: updatedUser,
+    });
+  } catch (error) {
+    console.error("Error updating user:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
