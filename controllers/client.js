@@ -167,6 +167,7 @@ export const updateProduct = async (req, res) => {
       department,
       shape,
       style,
+      unitQuantity,
       productId,
     } = req.body;
     const mainImage =
@@ -248,6 +249,7 @@ export const updateProduct = async (req, res) => {
         shape: shape || product.shape,
         style: style || product.style,
         productId: productId || product.productId,
+        unitQuantity: unitQuantity || product.unitQuantity,
       },
       { new: true } // Return the updated product
     );
