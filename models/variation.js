@@ -114,6 +114,10 @@ const VariationSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  variationType: {  
+    type: String,
+   
+  },
   isActive :{ type: Boolean, default: true }  ,
   isDeleted:{ type: Boolean, default: false } 
 

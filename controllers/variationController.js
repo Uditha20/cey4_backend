@@ -16,7 +16,7 @@ export const addVariation = async (req, res) => {
         ? req.files["additionalImages"].map((file) => file.path)
         : [];
 
-    const { name, quantity, productId, itemQty, variationId } = req.body;
+    const { name, quantity, productId, itemQty, variationId,variationType } = req.body;
 
     const newVariation = new Variation({
       name,
@@ -29,6 +29,7 @@ export const addVariation = async (req, res) => {
       mdPrice,
       mainImage,
       additionalImages,
+      variationType
     });
 
     await newVariation.save();
