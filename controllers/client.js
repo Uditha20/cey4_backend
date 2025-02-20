@@ -157,6 +157,7 @@ export const updateProduct = async (req, res) => {
       itemType,
       handmade,
       colour,
+      capacity,
       capacityMeasure,
       indoorOutdoor,
       originalReproduction,
@@ -238,6 +239,7 @@ export const updateProduct = async (req, res) => {
         handmade: handmade || product.handmade,
         colour: colour || product.colour,
         capacityMeasure: capacityMeasure || product.capacityMeasure,
+        capacity: capacity || product.capacity, 
         indoorOutdoor: indoorOutdoor || product.indoorOutdoor,
         originalReproduction:
           originalReproduction || product.originalReproduction,
