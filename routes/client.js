@@ -12,6 +12,7 @@ import {
   deleteProduct,
   getProductsForDashboard,
   getActiveProductCount,
+  getProductById,
 } from "../controllers/client.js";
 
 import multer from "multer";
@@ -59,6 +60,7 @@ router.patch('/update-product', updateProducts);
 router.patch('/updateOneProduct/:id', updateOneProduct);
 router.patch('/deleteOneProduct/:id', deleteProduct);
 router.get('/prodictcount',getActiveProductCount)
+router.get('/products/:id', getProductById);
 
 
 

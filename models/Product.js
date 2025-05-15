@@ -176,6 +176,11 @@ const ProductSchema = new mongoose.Schema(
       type: String,
       default: "Sri Lanka",
     },
+    reSellerPrice: {
+      type: Number,
+      default: 0,
+    },
+    
     indoorOutdoor: String,
     originalReproduction: String,
     handmade: String,
