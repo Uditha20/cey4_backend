@@ -23,33 +23,52 @@
 
 // export default protect;
 
-import jwt from 'jsonwebtoken';
-import User from '../models/User.js';
+// import jwt from 'jsonwebtoken';
+// import User from '../models/User.js';
 
-const protect = async (req, res, next) => {
-  let token;
+// const protect = async (req, res, next) => {
+//   let token;
 
-  // Check if token is provided in query parameters
-  if (req.query.token) {
-    token = req.query.token;
-  }
+//   // Check if token is provided in query parameters
+//   if (req.query.token) {
+//     token = req.query.token;
+//   }
 
-  if (token) {
-    try {
-      // Verify the token
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+//   if (token) {
+//     try {
+//       // Verify the token
+//       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-      // Find the user by ID and attach user data to the request object
-      req.user = await User.findById(decoded.id).select('-password');
+//       // Find the user by ID and attach user data to the request object
+//       req.user = await User.findById(decoded.id).select('-password');
       
-      next(); // Proceed to the next middleware or route handler
-    } catch (error) {
-      res.status(401).json({ message: 'Not authorized, token failed' });
-    }
-  } else {
-    // Respond with an error if no token is provided
-    res.status(401).json({ message: 'Not authorized, no token' });
-  }
-};
+//       next(); // Proceed to the next middleware or route handler
+//     } catch (error) {
+//       res.status(401).json({ message: 'Not authorized, token failed' });
+//     }
+//   } else {
+//     // Respond with an error if no token is provided
+//     res.status(401).json({ message: 'Not authorized, no token' });
+//   }
+// };
 
-export default protect;
+// export default protect;
+
+
+import jwt from 'jsonwebtoken';
+import { errorHandler } from '../utils/error.js';
+
+export const verifyToken = (req, res, next) => {
+    const token = req.cookies.token;
+
+    if (!token) return next(errorHandler(401, 'You are not authenticated!'));
+
+    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+        if (err) return next(errorHandler(403, 'Token is not valid!'));
+
+        req.user = user;
+        next();
+    });
+
+
+}

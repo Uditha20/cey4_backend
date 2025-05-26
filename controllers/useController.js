@@ -1,9 +1,10 @@
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
-import generateToken from "../utils/generateToken.js";
+
+import jwt from "jsonwebtoken";
 
 import crypto from "crypto";
-import {sendEmail,sendWelcomeEmail} from "../middleware/sendMail.js";
+import { sendEmail, sendWelcomeEmail } from "../middleware/sendMail.js";
 
 export const registerUser = async (req, res) => {
   const { name, email, password, city, state, country, phoneNumber } = req.body;
@@ -37,11 +38,10 @@ export const registerUser = async (req, res) => {
       verificationTokenExpiresAt: Date.now() + 24 * 60 * 60 * 1000, // 24 hours
     });
 
-    generateToken(user._id, user.role, res);
+    // generateToken(user._id, user.role, res);
     // await sendVerificationEmail(user.email, verificationToken);
-   
+
     const emailSubject = "Verify Your Email";
-    
 
     await sendEmail(email, emailSubject, "", verificationToken);
     res.status(201).json({
@@ -68,12 +68,10 @@ export const verifyEmail = async (req, res) => {
     });
 
     if (!user) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "Invalid or expired verification code",
-        });
+      return res.status(400).json({
+        success: false,
+        message: "Invalid or expired verification code",
+      });
     }
 
     user.isVerified = true;
@@ -97,11 +95,11 @@ export const verifyEmail = async (req, res) => {
   }
 };
 
-const singToken = (id, role) => {
-  return jwt.sign({ id, role }, process.env.JWT_SECRET, {
-    expiresIn: "1hr",
-  });
-};
+// const singToken = (id, role) => {
+//   return jwt.sign({ id, role }, process.env.JWT_SECRET, {
+//     expiresIn: "1hr",
+//   });
+// };
 
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
@@ -121,9 +119,17 @@ export const loginUser = async (req, res) => {
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid email or password" });
     }
-
     // Generate JWT token
-    const token = generateToken(user._id, user.role, res);
+    const token = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET
+    );
+    const expiryDate = new Date(Date.now() + 3600000);
+    res.cookie("token", token, {
+      httpOnly: true,
+      expires: expiryDate,
+    });
+
     user.lastLogin = new Date();
     await user.save();
 
@@ -131,7 +137,7 @@ export const loginUser = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Logged in successfully",
-      token,
+
       user: {
         ...user._doc,
         password: undefined,
@@ -176,12 +182,10 @@ export const forgotPassword = async (req, res) => {
       `${process.env.MAINURL}/reset-password/${resetToken}`
     );
 
-    res
-      .status(200)
-      .json({
-        success: true,
-        message: "Password reset link sent to your email",
-      });
+    res.status(200).json({
+      success: true,
+      message: "Password reset link sent to your email",
+    });
   } catch (error) {
     console.log("Error in forgotPassword ", error);
     res.status(400).json({ success: false, message: error.message });
@@ -225,15 +229,18 @@ export const resetPassword = async (req, res) => {
 
 export const getUserProfile = async (req, res) => {
   try {
+    const user = await User.findById(req.user.id).select("-password");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
     res.json({
       success: true,
-      user: req.user, // The user data added by the middleware
+      user, // Return the user data
     });
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
 };
-
 
 export const updateUserProfile = async (req, res) => {
   try {

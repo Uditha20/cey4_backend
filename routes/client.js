@@ -16,12 +16,13 @@ import {
 } from "../controllers/client.js";
 
 import multer from "multer";
-import protect from "../middleware/authMiddleware.js";
+
 import { addVariation } from "../controllers/variationController.js";
+import { verifyToken } from "../middleware/authMiddleware.js";
 const router = express.Router();
 
 router.get("/products", getProducts);
-router.get("/dashboard/products",protect,getProducts);
+router.get("/dashboard/products",verifyToken,getProducts);
 router.get("/customers", getCustomers);
 router.get("/transactions", getTransactions);
 router.get("/geography", getGeography);
