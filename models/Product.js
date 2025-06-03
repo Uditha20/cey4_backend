@@ -176,7 +176,7 @@ const ProductSchema = new mongoose.Schema(
       type: String,
       default: "Sri Lanka",
     },
-    reSellerPrice: {
+    resellerPrice: {
       type: Number,
       default: 0,
     },

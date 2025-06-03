@@ -170,6 +170,7 @@ export const updateProduct = async (req, res) => {
       style,
       unitQuantity,
       productId,
+      resellerPrice,
     } = req.body;
     const mainImage =
       req.files && req.files["mainImage"] && req.files["mainImage"].length > 0
@@ -252,6 +253,7 @@ export const updateProduct = async (req, res) => {
         style: style || product.style,
         productId: productId || product.productId,
         unitQuantity: unitQuantity || product.unitQuantity,
+        resellerPrice: resellerPrice || product.resellerPrice,
       },
       { new: true } // Return the updated product
     );
