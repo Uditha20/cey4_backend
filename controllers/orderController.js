@@ -6,9 +6,10 @@ import Stripe from "stripe";
 // Function to create a new order
 export const createOrder = async (req, res) => {
   try {
-    const { items, overallTotal, billingInfo, deliveryInfo } = req.body;
+    const { user,items, overallTotal, billingInfo, deliveryInfo } = req.body;
 
     const newOrder = new Order({
+      user,
       items,
       overallTotal,
       billingInfo,
