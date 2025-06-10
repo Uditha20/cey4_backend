@@ -71,13 +71,37 @@ export const paymentSession = async (req, res, next) => {
   }
 };
 
-// Function to handle all orders
 export const getAllOrders = async (req, res) => {
   try {
     const orders = await Order.aggregate([
       {
         $match: {
           status: { $ne: "pending" }, // Exclude orders with status "pending"
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "user",
+          foreignField: "_id",
+          as: "userDetails",
+        },
+      },
+      {
+        $addFields: {
+          userDetails: {
+            $cond: {
+              if: { $eq: [{ $size: "$userDetails" }, 0] },
+              then: [null], // Set to array with null if no user found
+              else: "$userDetails"
+            }
+          }
+        }
+      },
+      {
+        $unwind: {
+          path: "$userDetails",
+          preserveNullAndEmptyArrays: true // Keep orders even if no user
         },
       },
       {
@@ -97,6 +121,20 @@ export const getAllOrders = async (req, res) => {
       {
         $group: {
           _id: "$_id",
+          user: { 
+            $first: {
+              $cond: {
+                if: { $ifNull: ["$userDetails", false] },
+                then: {
+                  _id: "$userDetails._id",
+                  name: { $concat: ["$userDetails.firstName", " ", "$userDetails.lastName"] },
+                  email: "$userDetails.email",
+                  role: "$userDetails.role",
+                },
+                else: null
+              }
+            }
+          },
           items: {
             $push: {
               product: "$productDetails",
@@ -108,19 +146,20 @@ export const getAllOrders = async (req, res) => {
           billingInfo: { $first: "$billingInfo" },
           createdAt: { $first: "$createdAt" },
           status: { $first: "$status" },
-          customFullOrderId:{$first:"$customFullOrderId"} // Include status explicitly
+          customFullOrderId: { $first: "$customFullOrderId" }
         },
       },
       {
         $project: {
           _id: 1,
+          user: 1,
           items: 1,
           totalDeliveryCost: 1,
           overallTotal: 1,
           billingInfo: 1,
           createdAt: 1,
-          status: 1, // Project status in the final output
-          customFullOrderId:1
+          status: 1,
+          customFullOrderId: 1
         },
       },
       {
